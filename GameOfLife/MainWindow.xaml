@@ -1,0 +1,34 @@
+﻿<Window x:Class="GameOfLife.MainWindow"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GameOfLife"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="800" Width="1300"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}">
+    <Border BorderThickness="2" BorderBrush="Black">
+        <StackPanel>
+            <DockPanel Height="40" Background="Gainsboro" MouseLeftButtonDown="DockPanel_MouseLeftButtonDown">
+                <Border DockPanel.Dock="Bottom" BorderBrush="Black" BorderThickness="1"/>
+                <Button DockPanel.Dock="Right" Content="{materialDesign:PackIcon ExitToApp}" ToolTip="Close App" Margin="0,0,5,0" Click="Button_Click" />
+                <TextBlock FontFamily="Georgia" FontSize="16" Text="Game Of Life by @maybedot" Height="17" Margin="8,0,0,0"/>
+            </DockPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+            </Grid>
+        </StackPanel>
+    </Border>
+</Window>
