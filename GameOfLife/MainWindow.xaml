@@ -38,12 +38,12 @@
                 </Grid.ColumnDefinitions>
                 <DockPanel Grid.Column="1" LastChildFill="True">
                     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Left"/>
-                    <Canvas x:Name="canvas"/>
+                    <Canvas Width="1035" Height="756" x:Name="canvas"/>
                 </DockPanel>
                 <DockPanel Grid.Column="0">
                     <TextBlock DockPanel.Dock="Top" TextAlignment="Center" Text="Rozdzielczość" FontFamily="Georgia" FontSize="16" Margin="5,5,0,0"/>
                     <TextBox DockPanel.Dock="Top" x:Name="resolutionBox" Text="" Margin="10,5,10,5" FontSize="16"/>
-                    <TextBlock DockPanel.Dock="Top" TextAlignment="Center" Text="Gęstość" FontFamily="Georgia" FontSize="16" Margin="5,5,0,0"/>
+                    <TextBlock DockPanel.Dock="Top" TextAlignment="Center" Text="Anti-gęstość" FontFamily="Georgia" FontSize="16" Margin="5,5,0,0"/>
                     <TextBox DockPanel.Dock="Top" x:Name="densityBox" Text="" Margin="10,5,10,5" FontSize="16"/>
                     <Button
                          x:Name="btnStop"

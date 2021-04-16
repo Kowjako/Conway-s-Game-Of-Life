@@ -18,13 +18,12 @@ namespace GameOfLife
         private int resolution;
         DispatcherTimer redrawTimer;
         private bool[,] field;
-
         private int rows, columns;
 
         public MainWindow()
         {
             redrawTimer = new DispatcherTimer();
-            redrawTimer.Interval = new System.TimeSpan(0, 0, 0, 0, 50);
+            redrawTimer.Interval = new System.TimeSpan(0, 0, 0, 0, 40);
             redrawTimer.Tick += redrawCanvas;
             InitializeComponent();
         }
@@ -58,15 +57,15 @@ namespace GameOfLife
         {
             /** Warunki do początku gry **/
             if (redrawTimer.IsEnabled) return;
-            if (String.IsNullOrEmpty(resolutionBox.Text) || Convert.ToInt32(resolutionBox.Text) > 25) return;
+            if (String.IsNullOrEmpty(resolutionBox.Text) || String.IsNullOrEmpty(densityBox.Text) || Convert.ToInt32(resolutionBox.Text) > 25) return;
 
             /*Inicjalizacja parametrów **/
             resolution = Convert.ToInt32(resolutionBox.Text);
             resolutionBox.IsEnabled = false;
             densityBox.IsEnabled = false;
 
-            rows = (int)canvas.Height / resolution;
-            columns = (int)canvas.Width / resolution;
+            rows = Convert.ToInt32(canvas.Height) / resolution;
+            columns = Convert.ToInt32(canvas.Width) / resolution;
             field = new bool[columns, rows]; /* Zeby zwracanie bylo jako X i Y czyli X - kolumna, Y - wiersz */
             createStartGeneration(); /* Tworzenie początkowej instancji */
             redrawTimer.Start(); /* Uruchomienie redraw timera */
@@ -79,14 +78,29 @@ namespace GameOfLife
             {
                 for (int y = 0; y < rows; y++)
                 {
-                    field[x, y] = r.Next(Convert.ToInt32(densityBox.Text)) == 0; /* Im wieksza gestosc tym mneijsza szansa ze klatka będzie żywa */
+                    field[x, y] = r.Next(Convert.ToInt32(densityBox.Text)) == 0; /* Im wieksza antigestosc tym mneijsza szansa ze klatka będzie żywa */
                 }
             }
         }
 
         private void DrawNextGeneration()
         {
-
+            for (int x = 0; x < columns; x++)
+            {
+                for (int y = 0; y < rows; y++)
+                {
+                    if (field[x, y])
+                    {
+                        Rectangle r = new Rectangle();
+                        r.Fill = Brushes.Green;
+                        r.Width = resolution;
+                        r.Height = resolution;
+                        canvas.Children.Add(r);
+                        Canvas.SetLeft(r, x * resolution);
+                        Canvas.SetTop(r, y * resolution);
+                    }
+                }
+            }
         }
     }
 }
