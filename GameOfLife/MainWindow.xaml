@@ -16,11 +16,19 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}">
+    <Window.Resources>
+        <Style x:Key="StyleHeader" TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignCaptionTextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Margin" Value="10 0" />
+            <Setter Property="Opacity" Value="0.56" />
+        </Style>
+    </Window.Resources>
     <Border BorderThickness="2" BorderBrush="Black">
-        <StackPanel>
-            <DockPanel Height="40" Background="Gainsboro" MouseLeftButtonDown="DockPanel_MouseLeftButtonDown">
+        <DockPanel LastChildFill="True"> 
+            <DockPanel DockPanel.Dock="Top" Height="40" Background="Gainsboro" MouseLeftButtonDown="DockPanel_MouseLeftButtonDown">
                 <Border DockPanel.Dock="Bottom" BorderBrush="Black" BorderThickness="1"/>
-                <Button DockPanel.Dock="Right" Content="{materialDesign:PackIcon ExitToApp}" ToolTip="Close App" Margin="0,0,5,0" Click="Button_Click" />
+                <Button DockPanel.Dock="Right" Content="{materialDesign:PackIcon ExitToApp}" Margin="0,0,5,0" Click="Button_Click"/>
                 <TextBlock FontFamily="Georgia" FontSize="16" Text="Game Of Life by @maybedot" Height="17" Margin="8,0,0,0"/>
             </DockPanel>
             <Grid>
@@ -28,7 +36,39 @@
                     <ColumnDefinition Width="0.5*"/>
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
+                <DockPanel Grid.Column="1" LastChildFill="True">
+                    <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Left"/>
+                    <Image />
+                </DockPanel>
+                <DockPanel Grid.Column="0">
+                    <TextBlock DockPanel.Dock="Top" TextAlignment="Center" Text="Rozdzielczość" FontFamily="Georgia" FontSize="16" Margin="5,5,0,0"/>
+                    <TextBox DockPanel.Dock="Top" x:Name="resolutionBox" Text="" Margin="10,5,10,5" FontSize="16"/>
+                    <TextBlock DockPanel.Dock="Top" TextAlignment="Center" Text="Gęstość" FontFamily="Georgia" FontSize="16" Margin="5,5,0,0"/>
+                    <TextBox DockPanel.Dock="Top" x:Name="densityBox" Text="" Margin="10,5,10,5" FontSize="16"/>
+                    <Button
+                         x:Name="btnStop"
+                         DockPanel.Dock="Bottom"
+                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                         Width="230"
+                         Background="SaddleBrown"
+                         BorderBrush="Black"
+                         Margin="0,0,0,10"
+                         Foreground="White"
+                         materialDesign:RippleAssist.Feedback="#DD000000"
+                         Content="Zatrzymaj grę" />
+                    <Button
+                         x:Name="btnStart"
+                         DockPanel.Dock="Bottom"
+                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                         Width="230"
+                         Background="SaddleBrown"
+                         BorderBrush="Black"
+                         Margin="0,0,0,-540"
+                         Foreground="White"
+                         materialDesign:RippleAssist.Feedback="#DD000000"
+                         Content="Zacznij grę"/>
+                </DockPanel>
             </Grid>
-        </StackPanel>
+        </DockPanel>
     </Border>
 </Window>
