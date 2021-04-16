@@ -17,10 +17,10 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}">
     <Border BorderThickness="2" BorderBrush="Black">
-        <StackPanel>
-            <DockPanel Height="40" Background="Gainsboro" MouseLeftButtonDown="DockPanel_MouseLeftButtonDown">
+        <DockPanel LastChildFill="True"> 
+            <DockPanel DockPanel.Dock="Top" Height="40" Background="Gainsboro" MouseLeftButtonDown="DockPanel_MouseLeftButtonDown">
                 <Border DockPanel.Dock="Bottom" BorderBrush="Black" BorderThickness="1"/>
-                <Button DockPanel.Dock="Right" Content="{materialDesign:PackIcon ExitToApp}" ToolTip="Close App" Margin="0,0,5,0" Click="Button_Click" />
+                <Button DockPanel.Dock="Right" Content="{materialDesign:PackIcon ExitToApp}" Margin="0,0,5,0" Click="Button_Click"/>
                 <TextBlock FontFamily="Georgia" FontSize="16" Text="Game Of Life by @maybedot" Height="17" Margin="8,0,0,0"/>
             </DockPanel>
             <Grid>
@@ -28,7 +28,13 @@
                     <ColumnDefinition Width="0.5*"/>
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
+                <DockPanel Grid.Column="1" LastChildFill="True">
+                    <Image />
+                </DockPanel>
+                <StackPanel Grid.Column="0">
+                    
+                </StackPanel>
             </Grid>
-        </StackPanel>
+        </DockPanel>
     </Border>
 </Window>
