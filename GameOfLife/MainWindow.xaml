@@ -46,7 +46,8 @@
                     <TextBlock DockPanel.Dock="Top" TextAlignment="Center" Text="Gęstość" FontFamily="Georgia" FontSize="16" Margin="5,5,0,0"/>
                     <TextBox DockPanel.Dock="Top" x:Name="densityBox" Text="" Margin="10,5,10,5" FontSize="16"/>
                     <Button
-                        DockPanel.Dock="Bottom"
+                         x:Name="btnStop"
+                         DockPanel.Dock="Bottom"
                          Style="{StaticResource MaterialDesignRaisedAccentButton}"
                          Width="230"
                          Background="SaddleBrown"
@@ -56,6 +57,7 @@
                          materialDesign:RippleAssist.Feedback="#DD000000"
                          Content="Zatrzymaj grę" />
                     <Button
+                         x:Name="btnStart"
                          DockPanel.Dock="Bottom"
                          Style="{StaticResource MaterialDesignRaisedAccentButton}"
                          Width="230"
