@@ -146,7 +146,47 @@ namespace GameOfLife
             else timer.Stop();
         }
 
+       
 
+        List<Cell> GetNeighbors(Cell cell)
+        {
+            List<Cell> NeighborsList = new List<Cell>();
+            for (int i = -1; i <= 1; i++)
+            {
+                for (int j = -1; j <= 1; j++)
+                {
+                    var neighbour = mainBoard[cell.Column + i, cell.Row + j];
+                    if (neighbour.Tag != null)
+                    {
+                        var temp = (Cell)neighbour.Tag;
+                        if (temp.Column != cell.Column || temp.Row != cell.Row)
+                            NeighborsList.Add(temp);
+                    }
+                }
+            }
+            return NeighborsList;
+        }
+
+        private void ChangeCells(List<Cell> cells)
+        {
+            foreach(Cell cell in cells)
+            {
+                if (!cell.State)
+                {
+                    cell.State = true;
+                    mainBoard[cell.Column, cell.Row].Fill = Brushes.Orange;
+                    liveCells++;
+                }
+                else
+                {
+                    cell.State = false;
+                    mainBoard[cell.Column, cell.Row].Fill = Brushes.White;
+                    liveCells--;
+                    if (liveCells == 0 && gameIsStarted)
+                        StopGame();
+                }
+            }
+        }
         #endregion
     }
 }
