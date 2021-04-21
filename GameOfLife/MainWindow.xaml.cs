@@ -22,7 +22,7 @@ namespace GameOfLife
         bool gameIsStarted = false;
         DispatcherTimer timer;
         Rectangle[,] mainBoard;
-        int density;
+        int density, time;
 
         public MainWindow()
         {
@@ -33,6 +33,11 @@ namespace GameOfLife
         {
             if (!gameIsStarted)
                 StartGame();
+        }
+
+        private void btnStop_Click(object sender, RoutedEventArgs e)
+        {
+            StopGame();
         }
 
         #region Static events 
@@ -99,9 +104,26 @@ namespace GameOfLife
             }
         }
 
+        
+
         private void StartGame()
         {
+            time = Convert.ToInt32(timeBox.Text);
+            timer = new DispatcherTimer();
+            timer.Interval = new TimeSpan(0, 0, 0, 0, time);
+            timer.Tick += DrawNextGeneration;
+            gameIsStarted = true;
+        }
 
+        private void StopGame()
+        {
+            timer.Stop();
+            gameIsStarted = false;
+        }
+
+        private void DrawNextGeneration(object sender, EventArgs e)
+        {
+            
         }
         #endregion
     }
