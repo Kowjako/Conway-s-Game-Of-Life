@@ -1,16 +1,12 @@
 ﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using System.Drawing;
 using System;
 using System.Windows.Shapes;
 using System.Windows.Media;
 using System.Windows.Controls;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Threading;
+using System.Linq;
 
 namespace GameOfLife
 {
@@ -22,23 +18,28 @@ namespace GameOfLife
         bool gameIsStarted = false;
         DispatcherTimer timer;
         Rectangle[,] mainBoard;
-        int density, time;
+        int density = 0, time, liveCells;
 
         public MainWindow()
         {
             InitializeComponent();
         }
 
+        #region Button events
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
+            density = Convert.ToInt32(densityBox.Text);
+            time = Convert.ToInt32(timeBox.Text);
+            CreateStartGeneration();
             if (!gameIsStarted)
-                StartGame();
+                StartGame(); 
         }
 
         private void btnStop_Click(object sender, RoutedEventArgs e)
         {
             StopGame();
         }
+        #endregion
 
         #region Static events 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -104,14 +105,31 @@ namespace GameOfLife
             }
         }
 
-        
+        private void CreateStartGeneration()
+        {
+            Random r = new Random();
+            foreach(Rectangle c in mainBoard)
+            {
+                if (c.Tag != null)
+                {
+                    var oneCell = (Cell)c.Tag;
+                    oneCell.State = r.Next(0, density) == 0;
+                    if (oneCell.State)
+                    {
+                        oneCell.State = true;
+                        mainBoard[oneCell.Column, oneCell.Row].Fill = Brushes.Orange;
+                        liveCells++;
+                    }
+                }
+            }
+        }
 
         private void StartGame()
         {
-            time = Convert.ToInt32(timeBox.Text);
             timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(0, 0, 0, 0, time);
             timer.Tick += DrawNextGeneration;
+            timer.Start();
             gameIsStarted = true;
         }
 
@@ -123,8 +141,12 @@ namespace GameOfLife
 
         private void DrawNextGeneration(object sender, EventArgs e)
         {
-            
+            if (liveCells > 0)
+                NextStep();
+            else timer.Stop();
         }
+
+
         #endregion
     }
 }
