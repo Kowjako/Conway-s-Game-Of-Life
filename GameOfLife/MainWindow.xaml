@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GameOfLife"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="1300"
+        Title="MainWindow" Height="804" Width="1305"
         WindowStyle="None"
         ResizeMode="NoResize"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -14,6 +14,8 @@
         TextElement.FontSize="13"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
+        Name="mainWindow"
+        Loaded="mainWindow_Loaded"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}">
     <Window.Resources>
@@ -36,15 +38,15 @@
                     <ColumnDefinition Width="0.5*"/>
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
-                <DockPanel Grid.Column="1" LastChildFill="True">
+                <DockPanel x:Name="centralPanel" Grid.Column="1" LastChildFill="True">
                     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Left"/>
-                    <Canvas Width="1035" Height="756" x:Name="canvas"/>
+                    <Canvas x:Name="canvas" Background="White" Width = "1040" Height = "760" />
                 </DockPanel>
                 <DockPanel Grid.Column="0">
-                    <TextBlock DockPanel.Dock="Top" TextAlignment="Center" Text="Rozdzielczość" FontFamily="Georgia" FontSize="16" Margin="5,5,0,0"/>
-                    <TextBox DockPanel.Dock="Top" x:Name="resolutionBox" Text="" Margin="10,5,10,5" FontSize="16"/>
-                    <TextBlock DockPanel.Dock="Top" TextAlignment="Center" Text="Anti-gęstość" FontFamily="Georgia" FontSize="16" Margin="5,5,0,0"/>
+                    <TextBlock DockPanel.Dock="Top" TextAlignment="Center" Text="Anty-gęstość" FontFamily="Georgia" FontSize="16" Margin="5,5,0,0"/>
                     <TextBox DockPanel.Dock="Top" x:Name="densityBox" Text="" Margin="10,5,10,5" FontSize="16"/>
+                    <TextBlock DockPanel.Dock="Top" TextAlignment="Center" Text="Czas odświeżania" FontFamily="Georgia" FontSize="16" Margin="5,5,0,0"/>
+                    <TextBox DockPanel.Dock="Top" x:Name="timeBox" Text="" Margin="10,5,10,5" FontSize="16"/>
                     <Button
                          x:Name="btnStop"
                          DockPanel.Dock="Bottom"
@@ -55,7 +57,7 @@
                          Margin="0,0,0,10"
                          Foreground="White"
                          materialDesign:RippleAssist.Feedback="#DD000000"
-                         Content="Zatrzymaj grę" Click="btnStop_Click" />
+                         Content="Zatrzymaj grę"/>
                     <Button
                          x:Name="btnStart"
                          DockPanel.Dock="Bottom"

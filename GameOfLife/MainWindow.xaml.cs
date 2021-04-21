@@ -7,100 +7,102 @@ using System;
 using System.Windows.Shapes;
 using System.Windows.Media;
 using System.Windows.Controls;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Threading;
 
 namespace GameOfLife
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-        private int resolution;
-        DispatcherTimer redrawTimer;
-        private bool[,] field;
-        private int rows, columns;
+        const int boardWidth = 1040, boardHeight = 760;
+        const int cellSize = 10;
+        static TimeSpan delay = new TimeSpan(0, 0, 0, 0, 100);
+        bool gameIsStarted = false;
+        DispatcherTimer timer;
+        Rectangle[,] mainBoard;
+        int density;
 
         public MainWindow()
         {
-            redrawTimer = new DispatcherTimer();
-            redrawTimer.Interval = new System.TimeSpan(0, 0, 0, 0, 40);
-            redrawTimer.Tick += redrawCanvas;
             InitializeComponent();
         }
 
-        private void redrawCanvas(object sender, System.EventArgs e)
+        private void btnStart_Click(object sender, RoutedEventArgs e)
         {
-            DrawNextGeneration();
+            if (!gameIsStarted)
+                StartGame();
         }
 
+        #region Static events 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void mainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            CreateBoard();
         }
 
         private void DockPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();
         }
+        #endregion
 
-        private void btnStart_Click(object sender, RoutedEventArgs e)
+        #region GameMethods 
+        private void CreateBoard()
         {
-            StartLife();
-        }
-
-        private void btnStop_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void StartLife()
-        {
-            /** Warunki do początku gry **/
-            if (redrawTimer.IsEnabled) return;
-            if (String.IsNullOrEmpty(resolutionBox.Text) || String.IsNullOrEmpty(densityBox.Text) || Convert.ToInt32(resolutionBox.Text) > 25) return;
-
-            /*Inicjalizacja parametrów **/
-            resolution = Convert.ToInt32(resolutionBox.Text);
-            resolutionBox.IsEnabled = false;
-            densityBox.IsEnabled = false;
-
-            rows = Convert.ToInt32(canvas.Height) / resolution;
-            columns = Convert.ToInt32(canvas.Width) / resolution;
-            field = new bool[columns, rows]; /* Zeby zwracanie bylo jako X i Y czyli X - kolumna, Y - wiersz */
-            createStartGeneration(); /* Tworzenie początkowej instancji */
-            redrawTimer.Start(); /* Uruchomienie redraw timera */
-        }
-
-        private void createStartGeneration()
-        {
-            Random r = new Random();
-            for (int x = 0; x < columns; x++)
+            canvas.Children.Clear();
+            mainBoard = new Rectangle[boardHeight / cellSize, boardWidth / cellSize];
+            for (int i = 0; i < boardHeight / cellSize; i++)
             {
-                for (int y = 0; y < rows; y++)
+                for (int j = 0; j < boardWidth / cellSize; j++)
                 {
-                    field[x, y] = r.Next(Convert.ToInt32(densityBox.Text)) == 0; /* Im wieksza antigestosc tym mneijsza szansa ze klatka będzie żywa */
-                }
-            }
-        }
-
-        private void DrawNextGeneration()
-        {
-            for (int x = 0; x < columns; x++)
-            {
-                for (int y = 0; y < rows; y++)
-                {
-                    if (field[x, y])
+                    /*Sprawdzenie warunków brzegowych, dla rysowania obwodu */
+                    if (i == 0 || i == boardHeight / cellSize - 1 || j == 0 || j == boardWidth / cellSize - 1)
                     {
-                        Rectangle r = new Rectangle();
-                        r.Fill = Brushes.Green;
-                        r.Width = resolution;
-                        r.Height = resolution;
+                        Rectangle r = new Rectangle
+                        {
+                            Width = cellSize,
+                            Height = cellSize,
+                            Stroke = Brushes.Gray,
+                            StrokeThickness = 0.5,
+                            Fill = Brushes.DarkGreen,
+                        };
+                        mainBoard[i, j] = r;
+                        Canvas.SetLeft(r, j * cellSize);
+                        Canvas.SetTop(r, i * cellSize);
                         canvas.Children.Add(r);
-                        Canvas.SetLeft(r, x * resolution);
-                        Canvas.SetTop(r, y * resolution);
+                    }
+                    else
+                    {
+                        /* Rysowanie klatek do użycia */
+                        Cell Cell = new Cell { State = false, Column = i, Row = j };
+                        Rectangle r = new Rectangle
+                        {
+                            Width = cellSize,
+                            Height = cellSize,
+                            Stroke = Brushes.Gray,
+                            StrokeThickness = 0.5,
+                            Fill = Brushes.White,
+                            Tag = Cell
+                        };
+                        mainBoard[i, j] = r;
+                        Canvas.SetLeft(r, j * cellSize);
+                        Canvas.SetTop(r, i * cellSize);
+                        canvas.Children.Add(r);
                     }
                 }
             }
         }
+
+        private void StartGame()
+        {
+
+        }
+        #endregion
     }
 }
