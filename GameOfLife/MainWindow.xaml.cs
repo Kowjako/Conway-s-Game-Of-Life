@@ -146,7 +146,32 @@ namespace GameOfLife
             else timer.Stop();
         }
 
-       
+        private void NextStep()
+        {
+            List<Cell> cellsToChange = new List<Cell>();
+            foreach (Rectangle cell in mainBoard)
+            {
+                if (cell.Tag != null)
+                {
+                    var tmpCell = (Cell)cell.Tag;
+                    int neighborsCount = GetNeighbors(tmpCell).Count(x => x.State == true);
+                    /* Klatka pozostaje żywa jeżeli ma 2 lub 3 sąsiadów */
+                    if (tmpCell.State) 
+                    {
+                        if (neighborsCount < 2 || neighborsCount > 3)
+                            cellsToChange.Add(tmpCell);
+                    }
+                    /* Jezeli klatka nie jest żywa ale ma 3 sąsiadów to musi być żywa*/
+                    else 
+                    {
+                        if (neighborsCount == 3)
+                            cellsToChange.Add(tmpCell);
+                    }
+                }
+            }
+            if (cellsToChange.Count != 0)
+                ChangeCells(cellsToChange);
+        }
 
         List<Cell> GetNeighbors(Cell cell)
         {
